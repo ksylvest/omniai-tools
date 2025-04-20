@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "omniai/openai"
+require "omniai/tools"
+
+print "Root (e.g. /usr/src/project): "
+root = gets.strip
+
+client = OmniAI::OpenAI::Client.new
+logger = Logger.new($stdout)
+
+tools = [
+  OmniAI::Tools::Docker::ComposeRunTool,
+].map { |klass| klass.new(root:, logger:) }
+
+puts "Type 'exit' or 'quit' to leave."
+
+prompt = OmniAI::Chat::Prompt.build do |builder|
+  builder.system "Use tools to interact with docker."
+end
+
+loop do
+  print "# "
+  text = gets.strip
+  break if %w[exit quit].include?(text)
+
+  prompt.user(text)
+  response = client.chat(prompt, stream: $stdout, tools:)
+  prompt.assistant(response.text)
+end

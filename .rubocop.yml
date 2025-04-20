@@ -1,0 +1,20 @@
+inherit_gem:
+  rubocop-basic: rubocop.yml
+
+plugins:
+  - rubocop-factory_bot
+  - rubocop-rake
+  - rubocop-rspec
+
+RSpec/SpecFilePathFormat:
+  CustomTransform:
+    OmniAI: omniai
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/SubjectStub:
+  Enabled: false
