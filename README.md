@@ -6,11 +6,11 @@
 [![Yard](https://img.shields.io/badge/docs-site-blue.svg)](https://omniai-tools.ksylvest.com)
 [![CircleCI](https://img.shields.io/circleci/build/github/ksylvest/omniai-tools)](https://circleci.com/gh/ksylvest/omniai-tools)
 
-`OmniAI::Tools` is a library of pre-built tools to simplify integrating common tasks w/ [OmniAI](https://github.com/ksylvest/omniai).
+`OmniAI::Tools` is a library of pre-built tools to simplify integrating common tasks with [OmniAI](https://github.com/ksylvest/omniai).
 
 ## Disk
 
-Disk tools are focused on creating / updating / deleting files and directories within a "root":
+Disk tools are focused on creating, updating, and deleting files and directories within a "root":
 
 ```ruby
 require "omniai/openai"
@@ -53,7 +53,7 @@ end
 
 ## Docker
 
-Disk tools are focused on running commands through Docker via compose:
+Docker tools are focused on running commands through Docker via Compose:
 
 ```ruby
 require "omniai/openai"
@@ -72,7 +72,7 @@ tools = [
 puts "Type 'exit' or 'quit' to leave."
 
 prompt = OmniAI::Chat::Prompt.build do |builder|
-  builder.system "Use tools to interact with docker."
+  builder.system "Use tools to interact with Docker."
 end
 
 loop do
