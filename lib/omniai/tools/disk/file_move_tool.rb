@@ -4,13 +4,13 @@ module OmniAI
   module Tools
     module Disk
       # @example
-      #   tool = OmniAI::Tools::Disk::FileDeleteTool.new(root: "./project")
+      #   tool = OmniAI::Tools::Disk::FileMoveTool.new(root: "./project")
       #   tool.execute(
       #     old_path: "./README.txt",
       #     new_path: "./README.md",
       #   )
       class FileMoveTool < BaseTool
-        description "moves a file"
+        description "Moves a file."
 
         parameter :old_path, :string, description: "a path (e.g. `./old.rb`)"
         parameter :new_path, :string, description: "a path (e.g. `./new.rb`)"

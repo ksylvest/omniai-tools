@@ -9,12 +9,12 @@ module OmniAI
       #   tool = OmniAI::Tools::Docker::ComposeRunTool.new(root: "./project")
       #   tool.execute(service: "app", command: "rspec" args: ["spec/main_spec.rb"])
       class ComposeRunTool < BaseTool
-        description "Run a command via docker with arguments on the project (e.g. `rspec spec/main_spec.rb`)."
+        description "Runs a command via Docker with arguments on the project (e.g. `rspec spec/main_spec.rb`)."
 
-        parameter :service, :string, description: "the service to run the command against (e.g. `app`)"
-        parameter :command, :string, description: "the command to run (e.g. `rspec`)"
-        parameter :args, :array, description: "the arguments for the command",
-          items: OmniAI::Tool::Property.string(description: "an argument for the command (e.g. `spec/main_spec.rb`)")
+        parameter :service, :string, description: "The service to run the command on (e.g. `app`)."
+        parameter :command, :string, description: "The command to run (e.g. `rspec`)."
+        parameter :args, :array, description: "The arguments for the command.",
+          items: OmniAI::Tool::Property.string(description: "An argument for the command (e.g. `spec/main_spec.rb`).")
 
         # @param service [String]
         # @param command [String]

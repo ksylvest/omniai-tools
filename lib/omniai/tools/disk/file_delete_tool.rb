@@ -7,9 +7,9 @@ module OmniAI
       #   tool = OmniAI::Tools::Disk::FileDeleteTool.new(root: "./project")
       #   tool.execute(path: "./README.md")
       class FileDeleteTool < BaseTool
-        description "reads the contents of a file"
+        description "Deletes a file."
 
-        parameter :path, :string, description: "a path to the directory (e.g. `./foo/bar`)"
+        parameter :path, :string, description: "a path to the file (e.g. `./README.md`)"
 
         required %i[path]
 

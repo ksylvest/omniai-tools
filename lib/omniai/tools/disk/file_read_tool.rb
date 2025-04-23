@@ -7,7 +7,7 @@ module OmniAI
       #   tool = OmniAI::Tools::Disk::FileReadTool.new(root: "./project")
       #   tool.execute(path: "./README.md") # => "..."
       class FileReadTool < BaseTool
-        description "reads the contents of a file"
+        description "Reads the contents of a file."
 
         parameter :path, :string, description: "a path (e.g. `./main.rb`)"
 
