@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    omniai-tools (0.1.0)
+    omniai-tools (0.2.0)
       omniai
       zeitwerk
 
