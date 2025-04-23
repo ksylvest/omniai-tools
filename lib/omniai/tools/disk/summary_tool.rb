@@ -7,7 +7,7 @@ module OmniAI
       #   tool = OmniAI::Tools::Disk::SummaryTool.new(root: "./project")
       #   tool.execute
       class SummaryTool < BaseTool
-        description "Summarize the contents (files and directories) of the project."
+        description "Summarizes the contents (files and directories) of the project."
 
         # @return [String]
         def execute

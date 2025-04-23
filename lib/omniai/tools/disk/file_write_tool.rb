@@ -7,7 +7,7 @@ module OmniAI
       #    tool = OmniAI::Tools::Disk::FileWriteTool.new(root: "./project")
       #    tool.execute(path: "./README.md", text: "Hello World")
       class FileWriteTool < BaseTool
-        description "Write the contents of a file."
+        description "Writes the contents of a file."
 
         parameter :path, :string, description: "a path for the file (e.g. `./main.rb`)"
         parameter :text, :string, description: "the text to write to the file (e.g. `puts 'Hello World'`)"

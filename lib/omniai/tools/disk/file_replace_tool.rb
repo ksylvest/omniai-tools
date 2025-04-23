@@ -11,7 +11,7 @@ module OmniAI
       #     path: "README.md"
       #   )
       class FileReplaceTool < BaseTool
-        description "replace a specific string in a file (old_text => new_text)"
+        description "Replaces a specific string in a file (old_text => new_text)."
 
         parameter :old_text, :string, description: "the old text (e.g. `puts 'ABC'`)"
         parameter :new_text, :string, description: "the new text (e.g. `puts 'DEF'`)"
