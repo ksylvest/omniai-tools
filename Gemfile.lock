@@ -37,8 +37,8 @@ GEM
     event_stream_parser (1.0.0)
     factory_bot (6.5.1)
       activesupport (>= 6.1.0)
-    ffi (1.17.1-x86_64-darwin)
-    ffi (1.17.1-x86_64-linux-gnu)
+    ffi (1.17.2-x86_64-darwin)
+    ffi (1.17.2-x86_64-linux-gnu)
     ffi-compiler (1.3.2)
       ffi (>= 1.15.5)
       rake
@@ -66,7 +66,7 @@ GEM
       rake (~> 13.0)
     logger (1.7.0)
     minitest (5.25.5)
-    omniai (2.4.0)
+    omniai (2.4.1)
       event_stream_parser
       http
       logger
