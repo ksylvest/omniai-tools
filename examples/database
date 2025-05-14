@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "omniai/openai"
+require "omniai/tools"
+
+require "sqlite3"
+
+db = SQLite3::Database.new(":memory:")
+
+client = OmniAI::OpenAI::Client.new
+logger = Logger.new($stdout)
+
+tools = [
+  OmniAI::Tools::Database::SqliteTool.new(logger:, db:),
+]
+
+puts "Type 'exit' or 'quit' to leave."
+
+prompt = OmniAI::Chat::Prompt.build do |builder|
+  builder.system "Use tools to manage a database as requested."
+end
+
+loop do
+  print "# "
+  text = gets.strip
+  break if %w[exit quit].include?(text)
+
+  prompt.user(text)
+  response = client.chat(prompt, stream: $stdout, tools:)
+  prompt.assistant(response.text)
+end
