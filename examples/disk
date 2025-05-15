@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require "bundler/setup"
+
 require "omniai/openai"
 require "omniai/tools"
 
@@ -9,6 +11,7 @@ root = gets.strip
 
 client = OmniAI::OpenAI::Client.new
 logger = Logger.new($stdout)
+logger.formatter = proc { |_, _, _, message| "[disk] #{message}\n" }
 
 tools = [
   OmniAI::Tools::Disk::DirectoryCreateTool,

@@ -8,6 +8,60 @@
 
 `OmniAI::Tools` is a library of pre-built tools to simplify integrating common tasks with [OmniAI](https://github.com/ksylvest/omniai).
 
+## Browser
+
+Database tools are focused on running SQL statements:
+
+```ruby
+require "omniai/openai"
+require "omniai/tools"
+
+require "watir"
+
+browser = Watir::Browser.new(:chrome)
+
+client = OmniAI::OpenAI::Client.new
+logger = Logger.new($stdout)
+
+tools = [
+  OmniAI::Tools::Browser::VisitTool,
+  OmniAI::Tools::Browser::InspectTool,
+  OmniAI::Tools::Browser::ButtonClickTool,
+  OmniAI::Tools::Browser::LinkClickTool,
+  OmniAI::Tools::Browser::TextFieldAreaSetTool,
+].map { |klass| klass.new(browser:, logger:) }
+
+puts "Type 'exit' or 'quit' to leave."
+
+prompt = OmniAI::Chat::Prompt.build do |builder|
+  builder.system <<~TEXT
+    You are tasked with assisting a user in browsing the web.
+  TEXT
+end
+
+loop do
+  print "# "
+  text = gets.strip
+  break if %w[exit quit].include?(text)
+
+  prompt.user(text)
+  response = client.chat(prompt, stream: $stdout, tools:)
+  prompt.assistant(response.text)
+end
+```
+
+```
+Type 'exit' or 'quit' to leave.
+# Visit news.ycombinator.com and list the top 5 posts.
+
+[browser] OmniAI::Tools::Browser::VisitTool#execute url="https://news.ycombinator.com"
+[browser] OmniAI::Tools::Browser::InspectTool#execute
+
+Here are the top 5 posts on Hacker News right now:
+
+...
+```
+
 ## Database
 
 Database tools are focused on running SQL statements:
