@@ -79,6 +79,8 @@ module OmniAI
         #
         # @return [Array<Hash>]
         def execute(statements:)
+          @logger.info("#{self.class.name}#{__method__} statements=#{statements.inspect}")
+
           [].tap do |executions|
             statements.map do |statement|
               execution = perform(statement:)
@@ -94,8 +96,6 @@ module OmniAI
         #
         # @return [Hash]
         def perform(statement:)
-          @logger.info(%(#{self.class.name}#perform statement=#{statement.inspect}))
-
           result = @db.execute2(statement)
 
           { status: :ok, statement:, result: }

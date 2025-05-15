@@ -6,22 +6,28 @@ require "bundler/setup"
 require "omniai/openai"
 require "omniai/tools"
 
-require "sqlite3"
+require "watir"
 
-db = SQLite3::Database.new(":memory:")
+browser = Watir::Browser.new(:chrome)
 
 client = OmniAI::OpenAI::Client.new
 logger = Logger.new($stdout)
-logger.formatter = proc { |_, _, _, message| "[database] #{message}\n" }
+logger.formatter = proc { |_, _, _, message| "[browser] #{message}\n" }
 
 tools = [
-  OmniAI::Tools::Database::SqliteTool.new(logger:, db:),
-]
+  OmniAI::Tools::Browser::VisitTool,
+  OmniAI::Tools::Browser::InspectTool,
+  OmniAI::Tools::Browser::ButtonClickTool,
+  OmniAI::Tools::Browser::LinkClickTool,
+  OmniAI::Tools::Browser::TextFieldAreaSetTool,
+].map { |klass| klass.new(browser:, logger:) }
 
 puts "Type 'exit' or 'quit' to leave."
 
 prompt = OmniAI::Chat::Prompt.build do |builder|
-  builder.system "Use tools to manage a database as requested."
+  builder.system <<~TEXT
+    You are tasked with assisting a user in browsing the web.
+  TEXT
 end
 
 loop do
