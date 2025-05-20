@@ -21,6 +21,9 @@ module OmniAI
           @logger.info("#{self.class.name}##{__method__} url=#{url.inspect}")
 
           @browser.goto(url)
+
+          # Return a meaningful string that includes information about the URL
+          "Successfully navigated to URL: #{url}"
         end
       end
     end

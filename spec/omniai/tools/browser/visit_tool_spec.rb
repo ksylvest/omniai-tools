@@ -12,7 +12,7 @@ RSpec.describe OmniAI::Tools::Browser::VisitTool do
 
     it "visits the URL" do
       allow(browser).to receive(:goto).with(url)
-      expect(execute).to be_nil
+      expect(execute).to eq("Successfully navigated to URL: #{url}")
       expect(browser).to have_received(:goto).with(url)
     end
   end
