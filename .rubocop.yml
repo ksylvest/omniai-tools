@@ -6,6 +6,21 @@ plugins:
   - rubocop-rake
   - rubocop-rspec
 
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
 RSpec/SpecFilePathFormat:
   CustomTransform:
     OmniAI: omniai

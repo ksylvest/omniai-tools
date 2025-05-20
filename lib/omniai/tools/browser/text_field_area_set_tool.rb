@@ -20,38 +20,9 @@ module OmniAI
         # @param selector [String] The ID / name of the text field / text area to interact with.
         # @param text [String] The text to set.
         def execute(selector:, text:)
-          @logger.info("#{self.class.name}##{__method__} selector=#{selector.inspect} text=#{text.inspect}")
+          @logger.info("#{self.class.name}##{__method__} selector=#{selector.inspect}")
 
-          element = find(id: selector) || find(name: selector)
-
-          return { error: "unknown selector=#{selector}" } if element.nil?
-
-          element.set(text)
-        end
-
-      protected
-
-        # @param selector [Hash]
-        #
-        # @return [Watir::TextArea, Watir::TextField, nil]
-        def find(selector)
-          find_text_area(selector) || find_text_field(selector)
-        end
-
-        # @param selector [Hash]
-        #
-        # @return [Watir::TextArea, nil]
-        def find_text_area(selector)
-          element = @browser.textarea(selector)
-          element if element.exists?
-        end
-
-        # @param selector [Hash]
-        #
-        # @return [Watir::TextField, nil]
-        def find_text_field(selector)
-          element = @browser.text_field(selector)
-          element if element.exists?
+          @driver.fill_in(selector:, text:)
         end
       end
     end

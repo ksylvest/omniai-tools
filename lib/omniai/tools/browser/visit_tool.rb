@@ -20,7 +20,7 @@ module OmniAI
         def execute(url:)
           @logger.info("#{self.class.name}##{__method__} url=#{url.inspect}")
 
-          @browser.goto(url)
+          @driver.goto(url:)
         end
       end
     end
