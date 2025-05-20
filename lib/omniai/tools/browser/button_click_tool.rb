@@ -16,23 +16,10 @@ module OmniAI
 
         required %i[selector]
 
-        # @param to [String] The URL to navigate to.
         def execute(selector:)
           @logger.info("#{self.class.name}##{__method__} selector=#{selector.inspect}")
 
-          element = find(text: selector) || find(id: selector)
-
-          return { error: "unknown selector=#{selector}" } if element.nil?
-
-          element.click
-        end
-
-      protected
-
-        # @return [Watir::Anchor, nil]
-        def find(selector)
-          element = @browser.button(selector)
-          element if element.exists?
+          @driver.button_click(selector:)
         end
       end
     end

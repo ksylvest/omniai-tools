@@ -16,20 +16,11 @@ Database tools are focused on running SQL statements:
 require "omniai/openai"
 require "omniai/tools"
 
-require "watir"
-
-browser = Watir::Browser.new(:chrome)
-
 client = OmniAI::OpenAI::Client.new
-logger = Logger.new($stdout)
 
-tools = [
-  OmniAI::Tools::Browser::VisitTool,
-  OmniAI::Tools::Browser::InspectTool,
-  OmniAI::Tools::Browser::ButtonClickTool,
-  OmniAI::Tools::Browser::LinkClickTool,
-  OmniAI::Tools::Browser::TextFieldAreaSetTool,
-].map { |klass| klass.new(browser:, logger:) }
+logger = Logger.new($stdout)
+driver = OmniAI::Tools::Browser::WatirDriver.new
+tools = [OmniAI::Tools::BrowserTool.new(driver: logger:)]
 
 puts "Type 'exit' or 'quit' to leave."
 

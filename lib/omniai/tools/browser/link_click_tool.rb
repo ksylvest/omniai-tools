@@ -14,23 +14,11 @@ module OmniAI
 
         parameter :selector, :string, description: "The ID or text of the link to interact with."
 
-        # @param to [String] The ID or text of the link to interact with.
+        # @param selector [String] The ID or text of the link to interact with.
         def execute(selector:)
           @logger.info("#{self.class.name}##{__method__} selector=#{selector.inspect}")
 
-          element = find(text: selector) || find(value: selector) || find(id: selector)
-
-          return { error: "unknown selector=#{selector}" } if element.nil?
-
-          element.click
-        end
-
-      protected
-
-        # @return [Watir::Anchor, nil]
-        def find(selector)
-          element = @browser.a(selector)
-          element if element.exists?
+          @driver.link_click(selector:)
         end
       end
     end
