@@ -211,7 +211,7 @@ GEM
       selenium-webdriver (~> 4.2)
     websocket (1.2.11)
     yard (0.9.37)
-    zeitwerk (2.7.2)
+    zeitwerk (2.7.3)
 
 PLATFORMS
   x86_64-darwin
