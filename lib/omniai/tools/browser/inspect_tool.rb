@@ -3,14 +3,17 @@
 require "nokogiri"
 require_relative "html_summarizer"
 require_relative "element_formatter"
+require_relative "nearby_element_detector"
 
 module OmniAI
   module Tools
     module Browser
+      # A browser automation tool for viewing the HTML for the browser.
+      #
       # @example
-      # browser = Watir::Browser.new(:chrome)
-      # tool = OmniAI::Tools::Browser::InspectTool.new(browser:)
-      # tool.execute(selector: 'h1')  # Or tool.execute to use default parameters
+      #   browser = Watir::Browser.new(:chrome)
+      #   tool = OmniAI::Tools::Browser::InspectTool.new(browser:)
+      #   tool.execute(selector: 'h1')  # Or tool.execute to use default parameters
       class InspectTool < BaseTool
         description "A browser automation tool for viewing the HTML for the browser."
 
@@ -47,26 +50,27 @@ module OmniAI
 
           return "No elements found containing text: #{text}" if elements.empty?
 
-          ElementFormatter.format_matching_elements(elements, text, context_size)
+          # Reduce context size when filtering to avoid showing unrelated elements
+          adjusted_context_size = additional_selector ? 0 : context_size
+
+          ElementFormatter.format_matching_elements(elements, text, adjusted_context_size)
         end
 
         def get_elements_matching_text(doc, text, additional_selector)
           text_downcase = text.downcase
 
           elements = find_elements_with_matching_text(doc, text_downcase)
+
           elements = add_elements_from_matching_labels(doc, text_downcase, elements)
 
-          # Apply additional CSS selector if provided
-          if additional_selector && !additional_selector.empty?
-            css_matches = doc.css(additional_selector)
-            elements = elements.select { |el| css_matches.include?(el) }
+          unless additional_selector && !additional_selector.empty?
+            elements = NearbyElementDetector.add_nearby_interactive_elements(elements)
           end
 
-          elements.uniq
+          apply_additional_selector(doc, elements, additional_selector)
         end
 
         def find_elements_with_matching_text(doc, text_downcase)
-          # Match text content and various attributes
           xpath_conditions = [
             ci_contains("text()", text_downcase),
             ci_contains("@value", text_downcase),
@@ -78,22 +82,27 @@ module OmniAI
         end
 
         def add_elements_from_matching_labels(doc, text_downcase, elements)
-          # Find matching label elements
-          label_condition = ci_contains("text()", text_downcase)
+          label_condition = ci_contains(".//text()", text_downcase)
           matching_labels = doc.xpath("//label[#{label_condition}]")
 
-          # Get input elements associated with the matching labels
           matching_labels.each do |label|
-            if label["for"]
-              associated_input = doc.css("##{label['for']}")
-              elements += associated_input if associated_input.any?
-            end
+            for_attr = label["for"]
+            next unless for_attr && !for_attr.empty?
+
+            associated_input = doc.css("[id='#{for_attr}']")
+            elements += associated_input if associated_input.any?
           end
 
           elements
         end
 
-        # Helper for case-insensitive XPath contains expressions
+        def apply_additional_selector(doc, elements, additional_selector)
+          return elements.uniq unless additional_selector && !additional_selector.empty?
+
+          css_matches = doc.css(additional_selector)
+          elements.select { |el| css_matches.include?(el) }.uniq
+        end
+
         def ci_contains(attribute, value)
           "contains(translate(#{attribute}, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', " \
             "'abcdefghijklmnopqrstuvwxyz'), '#{value}')"

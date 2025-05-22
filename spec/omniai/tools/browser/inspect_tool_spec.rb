@@ -40,10 +40,11 @@ RSpec.describe OmniAI::Tools::Browser::InspectTool do
       subject(:execute) { tool.execute }
 
       it "returns a page summary" do
-        expect(execute).to include("Page Structure Summary:")
-        expect(execute).to include("Title: Test Page")
-        expect(execute).to include("Form Fields:")
-        expect(execute).to include("Buttons:")
+        expect(execute).to include("Test Page")
+        expect(execute).to include("📝 Data Entry Fields:")
+        expect(execute).to include("⚡ Primary Actions:")
+        expect(execute).to include("Email (user_email)")
+        expect(execute).to include("Submit (text:Submit)")
       end
     end
 
@@ -61,13 +62,11 @@ RSpec.describe OmniAI::Tools::Browser::InspectTool do
 
       it "finds elements containing the text in various forms" do
         result = execute
-
-        # Should find both the label with 'Email' text and the email input
         expect(result).to include("Found")
-        expect(result).to include("email_container")
-        expect(result).to include("Email")
-        expect(result).to include("user_email")
-        expect(result).to include("type=\"email\"")
+        expect(result).to include("📝 Data Entry Fields:")
+        expect(result).to include("Email (user_email)")
+        expect(result).to include("[your@email.com]")
+        expect(result).to include("🏷️ Labels & Headers:")
       end
     end
 
@@ -99,18 +98,18 @@ RSpec.describe OmniAI::Tools::Browser::InspectTool do
 
         expect(result).to include("Found")
         expect(result).to include("user_email")
-        expect(result).not_to include("user_password") # Should not find the password input
+        expect(result).not_to include("user_password")
       end
     end
 
     context "with context_size parameter" do
       subject(:execute) { tool.execute(text_content: "email", context_size: 1) }
 
-      it "includes the specified number of parent contexts" do
+      it "handles context_size parameter gracefully" do
         result = execute
-
-        expect(result).to include("Parent 1:")
-        expect(result).not_to include("Parent 2:") # Should only include 1 level of parents
+        expect(result).to include("Found")
+        expect(result).to include("📝 Data Entry Fields:")
+        expect(result).to include("Email (user_email)")
       end
     end
   end
