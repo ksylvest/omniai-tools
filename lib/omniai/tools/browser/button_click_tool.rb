@@ -16,22 +16,37 @@ module OmniAI
 
         required %i[selector]
 
-        # @param to [String] The URL to navigate to.
+        # @param selector [String] The ID or text of the button to interact with.
         def execute(selector:)
           @logger.info("#{self.class.name}##{__method__} selector=#{selector.inspect}")
 
-          element = find(text: selector) || find(id: selector)
+          element = find_by_text(selector) || find_by_id(selector)
 
           return { error: "unknown selector=#{selector}" } if element.nil?
 
           element.click
+
+          # Return a meaningful string that includes information about the selector
+          "Successfully clicked button with selector: #{selector}"
         end
 
       protected
 
-        # @return [Watir::Anchor, nil]
-        def find(selector)
-          element = @browser.button(selector)
+        # @param text [String] The text of the button to find
+        # @return [Watir::Button, nil]
+        def find_by_text(text)
+          element = @browser.button(text:)
+          return nil unless element.respond_to?(:exists?)
+
+          element if element.exists?
+        end
+
+        # @param id [String] The ID of the button to find
+        # @return [Watir::Button, nil]
+        def find_by_id(id)
+          element = @browser.button(id:)
+          return nil unless element.respond_to?(:exists?)
+
           element if element.exists?
         end
       end
