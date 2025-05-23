@@ -10,7 +10,7 @@
 
 ## Browser
 
-Database tools are focused on running SQL statements:
+Browser tools allow you to interact with any website (e.g. visit a page, click on a button, fill in some text, etc):
 
 ```ruby
 require "omniai/openai"
@@ -60,6 +60,61 @@ Type 'exit' or 'quit' to leave.
 Here are the top 5 posts on Hacker News right now:
 
 ...
+```
+
+## Computer
+
+A computer tool grants the ability to manage a computer via an LLM:
+
+```ruby
+require "omniai/openai"
+require "omniai/tools"
+
+require "macos"
+
+client = OmniAI::OpenAI::Client.new
+logger = Logger.new($stdout)
+
+driver = OmniAI::Tools::Computer::MacDriver.new
+tool = OmniAI::Tools::Computer::DesktopTool.new(driver:, logger:)
+
+puts "Type 'exit' or 'quit' to leave."
+
+prompt = OmniAI::Chat::Prompt.build do |builder|
+  builder.system <<~TEXT
+    You are tasked with assisting a user in browsing the web.
+  TEXT
+end
+
+loop do
+  print "# "
+  text = gets.strip
+  break if %w[exit quit].include?(text)
+
+  prompt.user(text)
+  response = client.chat(prompt, stream: $stdout, tools: [tool])
+  prompt.assistant(response.text)
+end
+```
+
+```
+Type 'exit' or 'quit' to leave.
+
+# What is the resolution of my display?
+[computer] action="display_bounds"
+Your display resolution is 2560 x 1440 pixels. If you need more details about your display settings or help adjusting them, let me know!
+
+# Move my mouse to the top left.
+[computer] action="mouse_move" coordinate={x: 0, y: 0}
+Your mouse pointer has been moved to the top left corner of your screen. If you need to click or perform another action there, just let me know!
+
+# Move my mouse to the bottom right.
+[computer] action="mouse_move" coordinate={x: 2559, y: 1439}
+Your mouse pointer has been moved to the bottom right corner of your screen. If you would like to click or perform another action there, just let me know!
+
+# What is the current position of my mouse?
+[computer] action="mouse_position"
+Your mouse is currently positioned at approximately (2559, 1439) on your screen.
 ```
 
 ## Database
