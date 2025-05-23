@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+
+require "omniai/openai"
+require "omniai/tools"
+
+client = OmniAI::OpenAI::Client.new
+logger = Logger.new($stdout)
+logger.formatter = proc { |_, _, _, message| "[computer] #{message}\n" }
+
+driver = OmniAI::Tools::Computer::MacDriver.new
+tools = [OmniAI::Tools::ComputerTool.new(driver:, logger:)]
+
+puts "Type 'exit' or 'quit' to leave."
+
+prompt = OmniAI::Chat::Prompt.build do |builder|
+  builder.system <<~TEXT
+    You are tasked with assisting a user with using there computer. Use the attached tool to perform any actions.
+
+    1. If you are unsure about an action try capturing a screenshot ahead of performing it.
+    2. If you are unsure about a specific action, ask the user for clarification.
+  TEXT
+end
+
+loop do
+  print "# "
+  text = gets.strip
+  break if %w[exit quit].include?(text)
+
+  prompt.user(text)
+  response = client.chat(prompt, stream: $stdout, tools:)
+  prompt.assistant(response.text)
+end
