@@ -98,7 +98,7 @@ GEM
       http
       logger
       zeitwerk
-    omniai-anthropic (2.6.0)
+    omniai-anthropic (2.6.1)
       event_stream_parser
       omniai (~> 2.6)
       zeitwerk
