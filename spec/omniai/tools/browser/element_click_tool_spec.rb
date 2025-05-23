@@ -91,7 +91,8 @@ RSpec.describe OmniAI::Tools::Browser::ElementClickTool do
         allow(browser).to receive(:element).with(css: selector).and_return(nil)
         allow(browser).to receive(:element).with(text: selector).and_return(nil)
         allow(browser).to receive(:element).with(id: selector).and_return(nil)
-        allow(browser).to receive(:element).with(xpath: selector).and_raise(StandardError.new("Invalid XPath expression"))
+        allow(browser).to receive(:element).with(xpath: selector)
+          .and_raise(StandardError.new("Invalid XPath expression"))
 
         expect(execute).to eq({ error: "unknown selector=#{selector}" })
       end

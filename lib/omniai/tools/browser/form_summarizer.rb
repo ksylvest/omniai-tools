@@ -43,7 +43,7 @@ module OmniAI
           result += format_field_group("📝 Text Fields", text_fields)
           result += format_field_group("🔧 Other Fields", other_fields)
 
-          result += "\n"
+          "#{result}\n"
         end
 
         def format_field_group(title, fields)

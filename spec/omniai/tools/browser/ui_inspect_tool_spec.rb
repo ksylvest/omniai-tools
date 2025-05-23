@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe OmniAI::Tools::Browser::InspectTool do
+RSpec.describe OmniAI::Tools::Browser::UIInspectTool do
   subject(:tool) { described_class.new(browser:) }
 
   let(:browser) { instance_double(Watir::Browser) }
@@ -36,27 +36,6 @@ RSpec.describe OmniAI::Tools::Browser::InspectTool do
       allow(browser).to receive(:html).and_return(html)
     end
 
-    context "with no parameters" do
-      subject(:execute) { tool.execute }
-
-      it "returns a page summary" do
-        expect(execute).to include("Test Page")
-        expect(execute).to include("📝 Data Entry Fields:")
-        expect(execute).to include("⚡ Primary Actions:")
-        expect(execute).to include("Email (user_email)")
-        expect(execute).to include("Submit (text:Submit)")
-      end
-    end
-
-    context "with full_html: true" do
-      subject(:execute) { tool.execute(full_html: true) }
-
-      it "returns the full HTML" do
-        expect(execute).to eq(html)
-        expect(browser).to have_received(:html)
-      end
-    end
-
     context "with text_content parameter - matching case-insensitive" do
       subject(:execute) { tool.execute(text_content: "email") }
 
@@ -78,20 +57,8 @@ RSpec.describe OmniAI::Tools::Browser::InspectTool do
       end
     end
 
-    context "with selector parameter" do
-      subject(:execute) { tool.execute(selector: "input[type='email']") }
-
-      it "finds elements matching the selector" do
-        result = execute
-
-        expect(result).to include("Found")
-        expect(result).to include("user_email")
-        expect(result).to include("type=\"email\"")
-      end
-    end
-
     context "with both selector and text_content parameters" do
-      subject(:execute) { tool.execute(selector: "input", text_content: "email") }
+      subject(:execute) { tool.execute(text_content: "email", selector: "input") }
 
       it "finds elements matching both criteria" do
         result = execute
@@ -110,6 +77,17 @@ RSpec.describe OmniAI::Tools::Browser::InspectTool do
         expect(result).to include("Found")
         expect(result).to include("📝 Data Entry Fields:")
         expect(result).to include("Email (user_email)")
+      end
+    end
+
+    context "when matching label text leads to associated input" do
+      subject(:execute) { tool.execute(text_content: "password") }
+
+      it "finds both the label and its associated input" do
+        result = execute
+        expect(result).to include("Found")
+        expect(result).to include("user_password")
+        expect(result).to include("Password")
       end
     end
   end

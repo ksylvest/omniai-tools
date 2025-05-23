@@ -60,11 +60,7 @@ module OmniAI
           link_button_patterns = %w[button--link btn-link link-button button-link]
           link_match = link_button_patterns.any? { |pattern| classes.include?(pattern) }
 
-          # Wave-specific patterns
-          wave_patterns = %w[wv-select__footer]
-          wave_match = wave_patterns.any? { |pattern| classes.include?(pattern) }
-
-          generic_match || link_match || wave_match
+          generic_match || link_match
         end
 
         def workflow_action_button?(button)
@@ -97,7 +93,7 @@ module OmniAI
           result += format_button_group(critical, "🔥 Critical")
           result += format_button_group(regular, "📝 Actions")
 
-          result += "\n"
+          "#{result}\n"
         end
 
         def critical_action?(button)
