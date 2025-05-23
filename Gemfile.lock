@@ -93,12 +93,12 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.8-x86_64-linux-gnu)
       racc (~> 1.4)
-    omniai (2.6.0)
+    omniai (2.8.0)
       event_stream_parser
       http
       logger
       zeitwerk
-    omniai-anthropic (2.6.0)
+    omniai-anthropic (2.6.1)
       event_stream_parser
       omniai (~> 2.6)
       zeitwerk
