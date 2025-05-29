@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-RSpec.describe OmniAI::Tools::Database::SqliteTool do
-  subject(:tool) { described_class.new(db:) }
+RSpec.describe OmniAI::Tools::DatabaseTool do
+  subject(:tool) { described_class.new(driver:) }
 
+  let(:driver) { OmniAI::Tools::Database::SqliteDriver.new(db:) }
   let(:db) { SQLite3::Database.new(":memory:") }
 
   describe "#execute" do
@@ -47,7 +48,7 @@ RSpec.describe OmniAI::Tools::Database::SqliteTool do
         {
           status: :error,
           statement: "SELECT * FROM places",
-          result: "no such table: places:\nSELECT * FROM places",
+          message: "no such table: places:\nSELECT * FROM places",
         },
       ])
     end
