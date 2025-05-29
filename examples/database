@@ -9,19 +9,18 @@ require "omniai/tools"
 require "sqlite3"
 
 db = SQLite3::Database.new(":memory:")
+driver = OmniAI::Tools::Database::SqliteDriver.new(db:)
 
 client = OmniAI::OpenAI::Client.new
 logger = Logger.new($stdout)
 logger.formatter = proc { |_, _, _, message| "[database] #{message}\n" }
 
-tools = [
-  OmniAI::Tools::Database::SqliteTool.new(logger:, db:),
-]
+tools = [OmniAI::Tools::DatabaseTool.new(logger:, driver:)]
 
 puts "Type 'exit' or 'quit' to leave."
 
 prompt = OmniAI::Chat::Prompt.build do |builder|
-  builder.system "Use tools to manage a database as requested."
+  builder.system "Use tools to manage a Postgres database as requested."
 end
 
 loop do

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    omniai-tools (0.5.1)
+    omniai-tools (0.5.2)
       omniai
       zeitwerk
 
@@ -123,6 +123,7 @@ GEM
     parser (3.3.8.0)
       ast (~> 2.4.1)
       racc
+    pg (1.5.9)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -231,6 +232,7 @@ DEPENDENCIES
   omniai-mistral
   omniai-openai
   omniai-tools!
+  pg
   rake
   redcarpet
   rspec

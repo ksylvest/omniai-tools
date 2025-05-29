@@ -64,13 +64,12 @@ require "omniai/tools"
 require "sqlite3"
 
 db = SQLite3::Database.new(":memory:")
+driver = OmniAI::Tools::Database::SqliteDriver.new(db:)
 
 client = OmniAI::OpenAI::Client.new
 logger = Logger.new($stdout)
 
-tools = [
-  OmniAI::Tools::Database::SqliteTool.new(logger:, db:),
-]
+tools = [OmniAI::Tools::DatabaseTool.new(logger:, driver:)]
 
 puts "Type 'exit' or 'quit' to leave."
 
