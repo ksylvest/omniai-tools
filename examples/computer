@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+
+require "omniai/openai"
+require "omniai/tools"
+
+client = OmniAI::OpenAI::Client.new
+logger = Logger.new($stdout)
+logger.formatter = proc { |_, _, _, message| "[computer] #{message}\n" }
+
+driver = OmniAI::Tools::Computer::MacDriver.new
+tools = [OmniAI::Tools::ComputerTool.new(driver:, logger:)]
+
+puts "Type 'exit' or 'quit' to leave."
+
+loop do
+  print "# "
+  text = gets.strip
+  break if %w[exit quit].include?(text)
+
+  driver.screenshot do |file|
+    client.chat(stream: $stdout, tools:) do |prompt|
+      prompt.system <<~TEXT
+        Assist the user with tasks related to the use their computer.
+
+        1. The display is #{driver.display_width}px (w) × #{driver.display_height}px (h).
+        2. Attached find a screenshot of the display that may be inspected to determine the state of the computer.
+        3. The computer is using MacOS with all the expected applications (e.g. Finder, Safari, etc).
+        4. Any coordinates used for clicking must be scaled for the bounds of the display.
+        5. Whenever possible prefer to navigate using keyboard shortcuts rather than mouse clicks.
+      TEXT
+
+      prompt.user do |message|
+        message.text(text)
+        message.file(file.path, "image/png")
+      end
+    end
+  end
+end

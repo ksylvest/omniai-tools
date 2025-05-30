@@ -10,7 +10,7 @@
 
 ## Browser
 
-Database tools are focused on running SQL statements:
+Browser tools allow you to interact with any website (e.g. visit a page, click on a button, fill in some text, etc):
 
 ```ruby
 require "omniai/openai"
@@ -51,6 +51,72 @@ Type 'exit' or 'quit' to leave.
 Here are the top 5 posts on Hacker News right now:
 
 ...
+```
+
+## Computer
+
+A computer tool grants the ability to manage a computer via an LLM:
+
+```ruby
+require "omniai/openai"
+require "omniai/tools"
+
+require "macos"
+
+client = OmniAI::OpenAI::Client.new
+logger = Logger.new($stdout)
+logger.formatter = proc { |_, _, _, message| "[computer] #{message}\n" }
+
+driver = OmniAI::Tools::Computer::MacDriver.new
+tools = [OmniAI::Tools::ComputerTool.new(driver:, logger:)]
+
+puts "Type 'exit' or 'quit' to leave."
+
+loop do
+  print "# "
+  text = gets.strip
+  break if %w[exit quit].include?(text)
+
+  driver.screenshot do |file|
+    client.chat(stream: $stdout, tools:) do |prompt|
+      prompt.system <<~TEXT
+        Assist the user with tasks related to the use their computer.
+
+        1. The display is #{driver.display_width}px (w) × #{driver.display_height}px (h).
+        2. Attached find a screenshot of the display that may be inspected to determine the state of the computer.
+        3. The computer is using MacOS with all the expected applications (e.g. Finder, Safari, etc).
+        4. Any coordinates used for clicking must be scaled for the bounds of the display.
+        5. Whenever possible prefer to navigate using keyboard shortcuts rather than mouse clicks.
+      TEXT
+
+      prompt.user do |message|
+        message.text(text)
+        message.file(file.path, "image/png")
+      end
+    end
+  end
+end
+```
+
+```
+Type 'exit' or 'quit' to leave.
+
+# What do you see on my screen?
+
+Here's what I see on your screen:
+- You are using a Mac with a display resolution of 2560×1440 pixels.
+- The Terminal app is open at the very top, with a command prompt in a directory related to "omnial-tools" and "computer".
+- Below the Terminal, Visual Studio Code (VS Code) is open showing a project directory named "omnial-tools", specifically in a folder like /examples/computer.
+
+# Please open Safari
+
+[computer] action="mouse_click" coordinate={x: 484, y: 1398} mouse_button="left"
+Safari is being opened now. Let me know if you need to visit a specific website or perform any other actions in Safari!
+
+# What is the current position of my mouse?
+
+[computer] action="mouse_position"
+Your mouse is currently positioned at approximately (484, 1398) on your screen.
 ```
 
 ## Database
