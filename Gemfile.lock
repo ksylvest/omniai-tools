@@ -49,6 +49,7 @@ GEM
     ffi-compiler (1.3.2)
       ffi (>= 1.15.5)
       rake
+    fiddle (1.1.8)
     google-cloud-env (2.3.0)
       base64 (~> 0.2)
       faraday (>= 1.0, < 3.a)
@@ -86,6 +87,10 @@ GEM
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
     logger (1.7.0)
+    macos (0.1.8)
+      ffi
+      fiddle
+      zeitwerk
     minitest (5.25.5)
     multi_json (1.15.0)
     net-http (0.6.0)
@@ -226,6 +231,7 @@ PLATFORMS
 DEPENDENCIES
   factory_bot
   irb
+  macos
   nokogiri
   omniai-anthropic
   omniai-google
@@ -248,4 +254,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   2.6.8
+   2.6.9

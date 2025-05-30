@@ -13,7 +13,6 @@ module OmniAI
         LINK_CLICK = "link_click"
         ELEMENT_CLICK = "element_click"
         TEXT_FIELD_SET = "text_field_set"
-        SCREENSHOT = "screenshot"
       end
 
       ACTIONS = [
@@ -25,7 +24,6 @@ module OmniAI
         Action::LINK_CLICK,
         Action::ELEMENT_CLICK,
         Action::TEXT_FIELD_SET,
-        Action::SCREENSHOT,
       ].freeze
 
       description <<~TEXT
@@ -104,7 +102,6 @@ module OmniAI
         * `#{Action::LINK_CLICK}`: Click a link element
         * `#{Action::ELEMENT_CLICK}`: Click any clickable element
         * `#{Action::TEXT_FIELD_SET}`: Enter text in input fields or text areas
-        * `#{Action::SCREENSHOT}`: Take a screenshot of the page or specific element
       TEXT
 
       parameter :url, :string, description: <<~TEXT

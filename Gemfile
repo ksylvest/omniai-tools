@@ -6,6 +6,7 @@ gemspec
 
 gem "factory_bot"
 gem "irb"
+gem "macos"
 gem "nokogiri"
 gem "omniai-anthropic"
 gem "omniai-google"
