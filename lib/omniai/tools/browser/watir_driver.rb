@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "watir"
-
 module OmniAI
   module Tools
     module Browser

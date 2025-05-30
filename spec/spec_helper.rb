@@ -2,6 +2,8 @@
 
 require "simplecov"
 
+Bundler.require(:default)
+
 SimpleCov.start do
   enable_coverage :branch
 end

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "macos"
-
 module OmniAI
   module Tools
     module Computer
