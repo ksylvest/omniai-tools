@@ -52,24 +52,10 @@ module OmniAI
           raise NotImplementedError, "#{self.class.name}#{__method__} undefined"
         end
 
-        # @param selector [String]
+        # @param selector [String] e.g. "button[type='submit']", "div#parent > span.child", etc
         #
         # @return [Hash]
-        def button_click(selector:)
-          raise NotImplementedError, "#{self.class.name}#{__method__} undefined"
-        end
-
-        # @param selector [String]
-        #
-        # @return [Hash]
-        def link_click(selector:)
-          raise NotImplementedError, "#{self.class.name}#{__method__} undefined"
-        end
-
-        # @param selector [String]
-        #
-        # @return [Hash]
-        def element_click(selector:)
+        def click(selector:)
           raise NotImplementedError, "#{self.class.name}#{__method__} undefined"
         end
       end

@@ -6,94 +6,28 @@ RSpec.describe OmniAI::Tools::Browser::WatirDriver do
   let(:browser) { instance_double(Watir::Browser) }
   let(:logger) { Logger.new(IO::NULL) }
 
-  describe "#find_text_field_by" do
-    let(:selector) { { id: "username" } }
-    let(:element) { instance_double(Watir::TextField, exists?: exists) }
-
-    before do
-      allow(browser).to receive(:text_field).with(selector).and_return(element)
-    end
-
-    context "when element exists" do
-      let(:exists) { true }
-
-      it "returns the element" do
-        expect(driver.send(:find_text_field_by, selector)).to eq(element)
-      end
-    end
-
-    context "when element does not exist" do
-      let(:exists) { false }
-
-      it "returns nil" do
-        expect(driver.send(:find_text_field_by, selector)).to be_nil
-      end
+  before do
+    allow(Watir::Wait).to receive(:until).and_wrap_original do |_timeout, &block|
+      block&.call
     end
   end
 
-  describe "#find_element_by" do
-    let(:selector) { { css: ".my-class" } }
-    let(:element) { instance_double(Watir::Element, exists?: exists) }
+  describe "#click" do
+    subject(:click) { driver.click(selector:) }
 
-    before do
-      allow(browser).to receive(:element).with(selector).and_return(element)
-    end
-
-    context "when element exists" do
-      let(:exists) { true }
-
-      it "returns the element" do
-        expect(driver.send(:find_element_by, selector)).to eq(element)
-      end
-    end
-
-    context "when element does not exist" do
-      let(:exists) { false }
-
-      it "returns nil" do
-        expect(driver.send(:find_element_by, selector)).to be_nil
-      end
-    end
-  end
-
-  describe "#find_link_by" do
-    let(:selector) { { text: "Home" } }
-    let(:element) { instance_double(Watir::Anchor, exists?: exists) }
-
-    before do
-      allow(browser).to receive(:link).with(selector).and_return(element)
-    end
-
-    context "when element exists" do
-      let(:exists) { true }
-
-      it "returns the element" do
-        expect(driver.send(:find_link_by, selector)).to eq(element)
-      end
-    end
-
-    context "when element does not exist" do
-      let(:exists) { false }
-
-      it "returns nil" do
-        expect(driver.send(:find_link_by, selector)).to be_nil
-      end
-    end
-  end
-
-  describe "#find_button_by" do
-    let(:selector) { { id: "submit" } }
+    let(:selector) { "button" }
     let(:element) { instance_double(Watir::Button, exists?: exists) }
 
     before do
-      allow(browser).to receive(:button).with(selector).and_return(element)
+      allow(browser).to receive(:element).and_return(element)
+      allow(element).to receive(:click)
     end
 
     context "when element exists" do
       let(:exists) { true }
 
       it "returns the element" do
-        expect(driver.send(:find_button_by, selector)).to eq(element)
+        expect(click).to eq({ status: :ok })
       end
     end
 
@@ -101,10 +35,43 @@ RSpec.describe OmniAI::Tools::Browser::WatirDriver do
       let(:exists) { false }
 
       it "returns nil" do
-        expect(driver.send(:find_button_by, selector)).to be_nil
+        expect(click).to eq({ status: :error, message: "unknown selector=\"button\"" })
+      end
+    end
+  end
+
+  describe "#fill_in" do
+    subject(:fill_in) { driver.fill_in(selector:, text:) }
+
+    let(:selector) { "[name='email']" }
+    let(:text) { "ringo@beatles.com" }
+    let(:input) { instance_double(Watir::Input, exists?: exists) }
+    let(:textarea) { instance_double(Watir::TextArea, exists?: exists) }
+
+    before do
+      allow(browser).to receive(:textarea).and_return(textarea)
+      allow(textarea).to receive(:set)
+    end
+
+    before do
+      allow(browser).to receive(:input).and_return(input)
+      allow(input).to receive(:set)
+    end
+
+    context "when element exists" do
+      let(:exists) { true }
+
+      it "returns the element" do
+        expect(fill_in).to eq({ status: :ok })
+      end
+    end
+
+    context "when element does not exist" do
+      let(:exists) { false }
+
+      it "returns nil" do
+        expect(fill_in).to eq({ status: :error, message: "unknown selector=\"[name='email']\"" })
       end
     end
   end
 end
-
-# ...existing code...

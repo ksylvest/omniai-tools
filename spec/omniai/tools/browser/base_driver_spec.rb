@@ -45,21 +45,9 @@ RSpec.describe OmniAI::Tools::Browser::BaseDriver do
     end
   end
 
-  describe "#button_click" do
+  describe "#click" do
     it "raises NotImplementedError" do
-      expect { driver.button_click(selector: "#btn") }.to raise_error(NotImplementedError)
-    end
-  end
-
-  describe "#link_click" do
-    it "raises NotImplementedError" do
-      expect { driver.link_click(selector: "#link") }.to raise_error(NotImplementedError)
-    end
-  end
-
-  describe "#element_click" do
-    it "raises NotImplementedError" do
-      expect { driver.element_click(selector: "#el") }.to raise_error(NotImplementedError)
+      expect { driver.click(selector: "#btn") }.to raise_error(NotImplementedError)
     end
   end
 end
