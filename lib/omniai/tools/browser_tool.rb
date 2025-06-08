@@ -9,9 +9,7 @@ module OmniAI
         PAGE_INSPECT = "page_inspect"
         UI_INSPECT = "ui_inspect"
         SELECTOR_INSPECT = "selector_inspect"
-        BUTTON_CLICK = "button_click"
-        LINK_CLICK = "link_click"
-        ELEMENT_CLICK = "element_click"
+        CLICK = "click"
         TEXT_FIELD_SET = "text_field_set"
         SCREENSHOT = "screenshot"
       end
@@ -21,49 +19,42 @@ module OmniAI
         Action::PAGE_INSPECT,
         Action::UI_INSPECT,
         Action::SELECTOR_INSPECT,
-        Action::BUTTON_CLICK,
-        Action::LINK_CLICK,
-        Action::ELEMENT_CLICK,
+        Action::CLICK,
         Action::TEXT_FIELD_SET,
         Action::SCREENSHOT,
       ].freeze
 
       description <<~TEXT
-          Control a web browser to automate interactions with websites.
+        Automates a web browser to perform various actions like visiting web pages, clicking elements, etc:
 
-          1. `#{Action::VISIT}` - Navigate to a website
-            Required: "action": "visit", "url": "[website URL]"
+        1. `#{Action::VISIT}` - Navigate to a website
+          Required: "action": "visit", "url": "[website URL]"
 
-          2. `#{Action::PAGE_INSPECT} - Get page HTML or summary
-            Required: "action": "page_inspect"
-            Optional: "full_html": true/false (get full HTML vs summary, default: summary)
+        2. `#{Action::PAGE_INSPECT} - Get page HTML or summary
+          Required: "action": "page_inspect"
+          Optional: "full_html": true/false (get full HTML vs summary, default: summary)
 
-          3. `#{Action::UI_INSPECT}` - Find elements by text content
-            Required: "action": "ui_inspect", "text_content": "[text to search for]"
-            Optional:
-            - "selector": "[CSS selector]" (search within specific container)
-            - "context_size": [number] (parent elements to show, default: 2)
+        3. `#{Action::UI_INSPECT}` - Find elements by text content
+          Required: "action": "ui_inspect", "text_content": "[text to search for]"
+          Optional:
+          - "selector": "[CSS selector]" (search within specific container)
+          - "context_size": [number] (parent elements to show, default: 2)
 
-          4. `#{Action::SELECTOR_INSPECT} - Find elements by CSS selector
-            Required: "action": "selector_inspect", "selector": "[CSS selector]"
-            Optional: "context_size": [number] (parent elements to show, default: 2)
+        4. `#{Action::SELECTOR_INSPECT} - Find elements by CSS selector
+          Required: "action": "selector_inspect", "selector": "[CSS selector]"
+          Optional: "context_size": [number] (parent elements to show, default: 2)
 
-          5. `#{Action::BUTTON_CLICK}` - Click a button
-            Required: "action": "button_click", "selector": "[button text or CSS selector]"
+        5. `#{Action::CLICK}` - Click an element by CSS selector
+          Required: "action": "click", "selector": "[CSS selector]"
 
-          6. `#{Action::LINK_CLICK}` - Click a link
-            Required: "action": "link_click", "selector": "[link text or CSS selector]"
+        8. `#{Action::TEXT_FIELD_SET}` - Enter text in input fields/text areas
+          Required: "action": "text_field_set", "selector": "[field CSS selector]", "value": "[text to enter]"
 
-          7. `#{Action::ELEMENT_CLICK}` - Click any clickable element (div, span, etc.)
-            Required: "action": "element_click", "selector": "[CSS selector, text content, ID, or XPath]"
+        9. `#{Action::SCREENSHOT}` - Take a screenshot of the page or specific element
+          Required: "action": "screenshot"
 
-          8. `#{Action::TEXT_FIELD_SET}` - Enter text in input fields/text areas
-            Required: "action": "text_field_set", "selector": "[field CSS selector]", "value": "[text to enter]"
+        ## Examples:
 
-          9. `#{Action::SCREENSHOT}` - Take a screenshot of the page or specific element
-            Required: "action": "screenshot"
-
-          Examples:
         Visit a website
           {"action": "#{Action::VISIT}", "url": "https://example.com"}
         Get page summary
@@ -78,16 +69,14 @@ module OmniAI
           {"action": "#{Action::SELECTOR_INSPECT}", "selector": ".button"}
         Find selector with context
           {"action": "#{Action::SELECTOR_INSPECT}", "selector": "h1", "context_size": 2}
-        Click a button with specific text
-          {"action": "#{Action::BUTTON_CLICK}", "selector": "Submit"}
-        Click a link with specific text
-          {"action": "#{Action::LINK_CLICK}", "selector": "Learn More"}
-        Click element by CSS selector
-          {"action": "#{Action::ELEMENT_CLICK}", "selector": ".wv-select__menu__option"}
-        Click element by role attribute
-          {"action": "#{Action::ELEMENT_CLICK}", "selector": "[role='listitem']"}
-        Click element by text content
-          {"action": "#{Action::ELEMENT_CLICK}", "selector": "Medical Evaluation Management"}
+        Click a button by CSS selector
+          {"action": "#{Action::CLICK}", "selector": "button[type='Submit']"}
+        Click a link by CSS Selector
+          {"action": "#{Action::CLICK}", "selector": "a[href='/login']"}
+        Click an element by CSS selector
+          {"action": "#{Action::CLICK}", "selector": "div.panel > span.toggle"}
+        Click an element by CSS selector:
+          {"action": "#{Action::CLICK}", "selector": "[role='listitem']"}
         Set text in an input field
           {"action": "#{Action::TEXT_FIELD_SET}", "selector": "#search", "value": "search query"}
         Take a full page screenshot
@@ -100,9 +89,7 @@ module OmniAI
         * `#{Action::PAGE_INSPECT}`: Get full HTML or summarized page information
         * `#{Action::UI_INSPECT}`: Find elements containing specific text
         * `#{Action::SELECTOR_INSPECT}`: Find elements matching CSS selectors
-        * `#{Action::BUTTON_CLICK}`: Click a button element
-        * `#{Action::LINK_CLICK}`: Click a link element
-        * `#{Action::ELEMENT_CLICK}`: Click any clickable element
+        * `#{Action::CLICK}`: Click an element by CSS selector
         * `#{Action::TEXT_FIELD_SET}`: Enter text in input fields or text areas
         * `#{Action::SCREENSHOT}`: Take a screenshot of the current page
       TEXT
@@ -113,12 +100,19 @@ module OmniAI
       TEXT
 
       parameter :selector, :string, description: <<~TEXT
-        CSS selector, ID, or text content of the element. Required for the following actions:
-        * `#{Action::SELECTOR_INSPECT}`
-        * `#{Action::BUTTON_CLICK}`
-        * `#{Action::LINK_CLICK}`
-        * `#{Action::ELEMENT_CLICK}`
+        A CSS selector to locate an element:
+
+          * 'form button[type="submit"]': selects a button with type submit
+          * '.example': selects elements with the foo and bar classes
+          * '#example': selects an element by ID
+          * 'div#parent > span.child': selects span elements that are direct children of div elements
+          * 'a[href="/login"]': selects an anchor tag with a specific href attribute
+          * 'button[aria-label="Close"]': selects an element by ARIA label
+
+        Required for the following actions:
+        * `#{Action::CLICK}`
         * `#{Action::TEXT_FIELD_SET}`
+        * `#{Action::SELECTOR_INSPECT}`
 
         Optional for the following actions:
         * `#{Action::UI_INSPECT}` (search within specific container)
@@ -161,7 +155,7 @@ module OmniAI
 
       # @param action [String]
       # @param url [String, nil]
-      # @param selector [String, nil]
+      # @param selector [String, nil] e.g. "button[type='submit']", "div#parent > span.child", etc
       # @param value [String, nil]
       # @param context_size [Integer]
       # @param full_html [Boolean]
@@ -185,15 +179,9 @@ module OmniAI
         when Action::SELECTOR_INSPECT
           require_param!(:selector, selector)
           selector_inspect_tool.execute(selector:, context_size:)
-        when Action::BUTTON_CLICK
+        when Action::CLICK
           require_param!(:selector, selector)
-          button_click_tool.execute(selector:)
-        when Action::LINK_CLICK
-          require_param!(:selector, selector)
-          link_click_tool.execute(selector:)
-        when Action::ELEMENT_CLICK
-          require_param!(:selector, selector)
-          element_click_tool.execute(selector:)
+          click_tool.execute(selector:)
         when Action::TEXT_FIELD_SET
           require_param!(:selector, selector)
           require_param!(:value, value)
@@ -236,19 +224,9 @@ module OmniAI
         Browser::SelectorInspectTool.new(driver: @driver, logger: @logger)
       end
 
-      # @return [Browser::ButtonClickTool]
-      def button_click_tool
-        Browser::ButtonClickTool.new(driver: @driver, logger: @logger)
-      end
-
-      # @return [Browser::LinkClickTool]
-      def link_click_tool
-        Browser::LinkClickTool.new(driver: @driver, logger: @logger)
-      end
-
-      # @return [Browser::ElementClickTool]
-      def element_click_tool
-        Browser::ElementClickTool.new(driver: @driver, logger: @logger)
+      # @return [Browser::ClickTool]
+      def click_tool
+        Browser::ClickTool.new(driver: @driver, logger: @logger)
       end
 
       # @return [Browser::TextFieldAreaSetTool]
