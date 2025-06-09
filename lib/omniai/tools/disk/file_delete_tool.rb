@@ -20,8 +20,7 @@ module OmniAI
         # @return [String]
         def execute(path:)
           @logger.info("#{self.class.name}#execute path=#{path.inspect}")
-
-          File.delete(resolve!(path:))
+          @driver.file_delete(path:)
         rescue SecurityError => e
           @logger.error(e.message)
           raise e

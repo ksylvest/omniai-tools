@@ -5,22 +5,22 @@ module OmniAI
     module Disk
       # @example
       #   tool = OmniAI::Tools::Disk::DirectoryMoveTool.new(root: "./project")
-      #   tool.execute(old_path: "./foo", new_path: "./bar")
+      #   tool.execute(path: "./foo", destination: "./bar")
       class DirectoryMoveTool < BaseTool
         description "Moves a directory from one location to another."
 
-        parameter :old_path, :string, description: "a path (e.g. `./old`)"
-        parameter :new_path, :string, description: "a path (e.g. `./new`)"
+        parameter :path, :string, description: "a path (e.g. `./old`)"
+        parameter :destination, :string, description: "a path (e.g. `./new`)"
 
-        required %i[old_path new_path]
+        required %i[path destination]
 
-        # @param old_path [String]
-        # @param new_path [String]
+        # @param path [String]
+        # @param destination [String]
         #
         # @return [String]
-        def execute(old_path:, new_path:)
-          @logger.info("#{self.class.name}#execute old_path=#{old_path.inspect} new_path=#{new_path.inspect}")
-          FileUtils.mv(resolve!(path: old_path), resolve!(path: new_path))
+        def execute(path:, destination:)
+          @logger.info("#{self.class.name}#execute path=#{path.inspect} destination=#{destination.inspect}")
+          @driver.directory_move(path:, destination:)
         rescue SecurityError => e
           @logger.error(e.message)
           raise e

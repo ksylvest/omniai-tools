@@ -18,7 +18,7 @@ module OmniAI
         # @return [String]
         def execute(path:)
           @logger.info("#{self.class.name}#execute path=#{path}")
-          File.read(resolve!(path:))
+          @driver.file_read(path:)
         rescue StandardError => e
           @logger.error(e.message)
           raise e

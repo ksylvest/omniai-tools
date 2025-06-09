@@ -179,18 +179,10 @@ root = gets.strip
 
 client = OmniAI::OpenAI::Client.new
 logger = Logger.new($stdout)
+logger.formatter = proc { |_, _, _, message| "[disk] #{message}\n" }
 
-tools = [
-  OmniAI::Tools::Disk::DirectoryCreateTool,
-  OmniAI::Tools::Disk::DirectoryDeleteTool,
-  OmniAI::Tools::Disk::FileCreateTool,
-  OmniAI::Tools::Disk::FileDeleteTool,
-  OmniAI::Tools::Disk::FileMoveTool,
-  OmniAI::Tools::Disk::FileReplaceTool,
-  OmniAI::Tools::Disk::FileReadTool,
-  OmniAI::Tools::Disk::FileWriteTool,
-  OmniAI::Tools::Disk::SummaryTool,
-].map { |klass| klass.new(root:, logger:) }
+driver = OmniAI::Tools::Disk::LocalDriver.new(root:)
+tools = [OmniAI::Tools::DiskTool.new(driver:, logger:)]
 
 puts "Type 'exit' or 'quit' to leave."
 

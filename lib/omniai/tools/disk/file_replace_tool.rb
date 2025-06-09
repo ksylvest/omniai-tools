@@ -24,12 +24,8 @@ module OmniAI
         # @param new_text [String]
         def execute(old_text:, new_text:, path:)
           @logger.info %(#{self.class.name}#execute old_text="#{old_text}" new_text="#{new_text}" path="#{path}")
-
-          resolved = resolve!(path:)
-          contents = File.read(resolved)
-          modified = contents.gsub(old_text, new_text)
-          File.write(resolved, modified)
-        rescue StandardError => e
+          @driver.file_replace(old_text:, new_text:, path:)
+        rescue SecurityError => e
           @logger.error(e.message)
           raise e
         end

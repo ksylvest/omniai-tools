@@ -6,28 +6,24 @@ module OmniAI
       # @example
       #   tool = OmniAI::Tools::Disk::FileMoveTool.new(root: "./project")
       #   tool.execute(
-      #     old_path: "./README.txt",
-      #     new_path: "./README.md",
+      #     path: "./README.txt",
+      #     destination: "./README.md",
       #   )
       class FileMoveTool < BaseTool
         description "Moves a file."
 
-        parameter :old_path, :string, description: "a path (e.g. `./old.rb`)"
-        parameter :new_path, :string, description: "a path (e.g. `./new.rb`)"
+        parameter :path, :string, description: "a path (e.g. `./old.rb`)"
+        parameter :destination, :string, description: "a path (e.g. `./new.rb`)"
 
-        required %i[old_path new_path]
+        required %i[path destination]
 
-        # @param old_path [String]
-        # @param new_path [String]
+        # @param path [String]
+        # @param destination [String]
         #
         # @return [String]
-        def execute(old_path:, new_path:)
-          @logger.info("#{self.class.name}#execute old_path=#{old_path.inspect} new_path=#{new_path.inspect}")
-
-          FileUtils.mv(
-            resolve!(path: old_path),
-            resolve!(path: new_path)
-          )
+        def execute(path:, destination:)
+          @logger.info("#{self.class.name}#execute path=#{path.inspect} destination=#{destination.inspect}")
+          @driver.file_move(path:, destination:)
         rescue SecurityError => e
           @logger.info("ERROR: #{e.message}")
           raise e

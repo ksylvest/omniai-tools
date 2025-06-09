@@ -1,25 +1,18 @@
 # frozen_string_literal: true
 
 RSpec.describe OmniAI::Tools::Disk::DirectoryCreateTool do
-  subject(:tool) { described_class.new(root:) }
+  subject(:tool) { described_class.new(driver:) }
 
-  let(:root) do
-    Dir.mktmpdir
-  end
-
-  around do |example|
-    example.run
-  ensure
-    FileUtils.remove_entry(root)
-  end
+  let(:driver) { OmniAI::Tools::Disk::BaseDriver.new(root:) }
+  let(:root) { ROOT.join("spec", "fixtures", "project") }
 
   describe "#execute" do
     subject(:execute) { tool.execute(path: "./example") }
 
     it "creates a directory" do
-      expect { execute }.to change { File.exist?(Pathname(root).join("example")) }
-        .from(false)
-        .to(true)
+      allow(driver).to receive(:directory_create)
+      execute
+      expect(driver).to have_received(:directory_create).with(path: "./example")
     end
   end
 end

@@ -2,14 +2,18 @@
 
 module OmniAI
   module Tools
-    # A tool for interacting with a computer. Be careful with using as it can perform actions on your computer!
+    # A tool for interacting with files and directories. Be careful using as it can perform actions on your computer!
     #
     # @example
-    #   computer = OmniAI::Tools::Computer::MacTool.new
-    #   computer.display # { "width": 2560, "height": 1440, "scale": 1 }
-    #   computer.screenshot
-    class ComputerTool < OmniAI::Tool
-      description "A tool for interacting with a computer."
+    #   disk = OmniAI::Tools::DiskTool.new
+    #   disk.execute(action: OmniAI::Tools::DiskTool::Action::FILE_CREATE, path: "./demo.rb")
+    #   disk.execute(action: OmniAI::Tools::DiskTool::Action::FILE_WRITE, path: "./demo.rb", text: "puts 'Hello'")
+    #   disk.execute(action: OmniAI::Tools::DiskTool::Action::FILE_READ, path: "./demo.rb")
+    #   disk.execute(action: OmniAI::Tools::DiskTool::Action::FILE_DELETE, path: "./demo.rb")
+    class DiskTool < OmniAI::Tool
+      description <<~TEXT
+        A tool for interacting with a system. It is able to list, create, delete, move and modify directories and files.
+      TEXT
 
       module Action
         DIRECTORY_CREATE = "directory_create"
@@ -39,13 +43,13 @@ module OmniAI
 
       parameter :action, :string, enum: ACTIONS, description: <<~TEXT
         Options:
-        * `#{Action::DIRECTORY_CREATE}`: creates a directory at a specific path
-        * `#{Action::DIRECTORY_DELETE}`: deletes a directory at a specific path
-        * `#{Action::DIRECTORY_MOVE}`: moves a directory from one path to another
-        * `#{Action::DIRECTORY_LIST}`: lists the contents of a directory at a specific path
-        * `#{Action::FILE_CREATE}`: creates a file at a specific path
-        * `#{Action::FILE_DELETE}`: deletes a file at a specific path
-        * `#{Action::FILE_MOVE}`: moves a file from one path to another
+        * `#{Action::DIRECTORY_CREATE}`: creates a directory at a specific `path`
+        * `#{Action::DIRECTORY_DELETE}`: deletes a directory at a specific `path`
+        * `#{Action::DIRECTORY_MOVE}`: moves a directory from `path` to (`to`)
+        * `#{Action::DIRECTORY_LIST}`: lists the contents of a directory at a specific `path` (use '.' for root)
+        * `#{Action::FILE_CREATE}`: creates a file at a specific `path`
+        * `#{Action::FILE_DELETE}`: deletes a file at a specific `path`
+        * `#{Action::FILE_MOVE}`: moves a file from `path` to another
         * `#{Action::FILE_READ}`: reads the contents of a file at a specific path
         * `#{Action::FILE_WRITE}`: writes the contents of a file at a specific path
         * `#{Action::FILE_REPLACE}`: replaces the contents of a file at a specific path
@@ -63,7 +67,7 @@ module OmniAI
         * `#{Action::FILE_REPLACE}`
       TEXT
 
-      parameter :to, :string, description: <<~TEXT
+      parameter :destination, :string, description: <<~TEXT
         A file or directory path that is required for the following actions:
         * `#{Action::DIRECTORY_MOVE}`
         * `#{Action::FILE_MOVE}`
@@ -81,35 +85,43 @@ module OmniAI
         The new text to replace in a few file for the `#{Action::FILE_REPLACE}` action.
       TEXT
 
-      # @param driver [Computer::Driver]
-      def initialize(logger: Logger.new(IO::NULL))
+      required %i[action path]
+
+      # @param driver [OmniAI::Tools::Disk::BaseDriver]
+      # @param logger [Logger]
+      def initialize(driver:, logger: Logger.new(IO::NULL))
         @logger = logger
+        @driver = driver
         super()
       end
 
       # @param action [String]
       # @param path [String]
-      # @param to [String]
-      # @param old_text [String]
-      # @param new_text [String]
-      def execute(action:, path: nil, to: nil, old_text: nil, new_text: nil)
+      # @param destination [String] optional
+      # @param old_text [String] optional
+      # @param new_text [String] optional
+      # @param text [String] optional
+      def execute(action:, path:, destination: nil, old_text: nil, new_text: nil, text: nil)
         @logger.info({
           action:,
           path:,
-          to:,
+          destination:,
+          old_text:,
+          new_text:,
+          text:,
         }.compact.map { |key, value| "#{key}=#{value.inspect}" }.join(" "))
 
         case action
-        when Action::DIRECTORY_CREATE then Disk::DirectoryCreateTool.new(logger: @logger).execute(path:)
-        when Action::DIRECTORY_DELETE then Disk::DirectoryDeleteTool.new(logger: @logger).execute(path:)
-        when Action::DIRECTORY_MOVE then Disk::DirectoryMoveTool.new(logger: @logger).execute(path:, to:)
-        when Action::DIRECTORY_LIST then Disk::DirectoryListTool.new(logger: @logger).execute(path:)
-        when Action::FILE_CREATE then Disk::FileCreateTool.new(logger: @logger).execute(path:)
-        when Action::FILE_DELETE then Disk::FileDeleteTool.new(logger: @logger).execute(path:)
-        when Action::FILE_MOVE then Disk::FileMoveTool.new(logger: @logger).execute(path:, to:)
-        when Action::FILE_READ then Disk::FileReadTool.new(logger: @logger).execute(path:)
-        when Action::FILE_WRITE then Disk::FileWriteTool.new(logger: @logger).execute(path:, text:)
-        when Action::FILE_REPLACE then Disk::FileReplaceTool.new(logger: @logger).execute(old_text:, new_text:, path:)
+        when Action::DIRECTORY_CREATE then @driver.directory_create(path:)
+        when Action::DIRECTORY_DELETE then @driver.directory_delete(path:)
+        when Action::DIRECTORY_MOVE then @driver.directory_move(path:, destination:)
+        when Action::DIRECTORY_LIST then @driver.directory_list(path:)
+        when Action::FILE_CREATE then @driver.file_create(path:)
+        when Action::FILE_DELETE then @driver.file_delete(path:)
+        when Action::FILE_MOVE then @driver.file_move(path:, destination:)
+        when Action::FILE_READ then @driver.file_read(path:)
+        when Action::FILE_WRITE then @driver.file_write(path:, text:)
+        when Action::FILE_REPLACE then @driver.file_replace(old_text:, new_text:, path:)
         end
       end
     end

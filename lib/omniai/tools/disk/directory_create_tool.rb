@@ -19,7 +19,7 @@ module OmniAI
         def execute(path:)
           @logger.info("#{self.class.name}#execute path=#{path.inspect}")
 
-          FileUtils.mkdir_p(resolve!(path:))
+          @driver.directory_create(path:)
         rescue SecurityError => e
           @logger.error(e.message)
           raise e
