@@ -63,10 +63,22 @@ module OmniAI
         * `#{Action::FILE_REPLACE}`
       TEXT
 
-      paramter :to, :string, description: <<~TEXT
+      parameter :to, :string, description: <<~TEXT
         A file or directory path that is required for the following actions:
         * `#{Action::DIRECTORY_MOVE}`
         * `#{Action::FILE_MOVE}`
+      TEXT
+
+      parameter :text, :string, description: <<~TEXT
+        The text to be written to a file for the `#{Action::FILE_WRITE}` action.
+      TEXT
+
+      parameter :old_text, :string, description: <<~TEXT
+        The old text to be replaced in a file for the `#{Action::FILE_REPLACE}` action.
+      TEXT
+
+      parameter :new_text, :string, description: <<~TEXT
+        The new text to replace in a few file for the `#{Action::FILE_REPLACE}` action.
       TEXT
 
       # @param driver [Computer::Driver]
@@ -78,7 +90,9 @@ module OmniAI
       # @param action [String]
       # @param path [String]
       # @param to [String]
-      def execute(action:, path: nil, to: nil)
+      # @param old_text [String]
+      # @param new_text [String]
+      def execute(action:, path: nil, to: nil, old_text: nil, new_text: nil)
         @logger.info({
           action:,
           path:,
@@ -94,8 +108,8 @@ module OmniAI
         when Action::FILE_DELETE then Disk::FileDeleteTool.new(logger: @logger).execute(path:)
         when Action::FILE_MOVE then Disk::FileMoveTool.new(logger: @logger).execute(path:, to:)
         when Action::FILE_READ then Disk::FileReadTool.new(logger: @logger).execute(path:)
-        when Action::FILE_WRITE then Disk::FileWriteTool.new(logger: @logger).execute(path:)
-        when Action::FILE_REPLACE then Disk::FileReplaceTool.new(logger: @logger).execute(path:)
+        when Action::FILE_WRITE then Disk::FileWriteTool.new(logger: @logger).execute(path:, text:)
+        when Action::FILE_REPLACE then Disk::FileReplaceTool.new(logger: @logger).execute(old_text:, new_text:, path:)
         end
       end
     end
