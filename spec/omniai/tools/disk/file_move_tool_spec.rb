@@ -1,38 +1,21 @@
 # frozen_string_literal: true
 
 RSpec.describe OmniAI::Tools::Disk::FileMoveTool do
-  subject(:tool) { described_class.new(root:) }
+  subject(:tool) { described_class.new(driver:) }
 
-  let(:root) do
-    dir = Dir.mktmpdir
-    FileUtils.touch(File.join(dir, "README.txt"))
-    dir
-  end
-
-  around do |example|
-    example.run
-  ensure
-    FileUtils.remove_entry(root)
-  end
+  let(:driver) { OmniAI::Tools::Disk::BaseDriver.new(root:) }
+  let(:root) { ROOT.join("spec", "fixtures", "project") }
 
   describe "#execute" do
-    subject(:execute) do
-      tool.execute(
-        old_path: "./README.txt",
-        new_path: "./README.md"
-      )
-    end
+    subject(:execute) { tool.execute(path:, destination:) }
 
-    it "creates the new path" do
-      expect { execute }.to change { File.exist?(Pathname(root).join("README.md")) }
-        .from(false)
-        .to(true)
-    end
+    let(:path) { "./README.txt" }
+    let(:destination) { "./README.md" }
 
-    it "deletes the old path" do
-      expect { execute }.to change { File.exist?(Pathname(root).join("README.txt")) }
-        .from(true)
-        .to(false)
+    it "moves a file" do
+      allow(driver).to receive(:file_move)
+      execute
+      expect(driver).to have_received(:file_move).with(path:, destination:)
     end
   end
 end

@@ -8,26 +8,12 @@ module OmniAI
       #     description "..."
       #   end
       class BaseTool < OmniAI::Tool
-        # @param root [Pathname] The root path for which a tool is able to operate within.
+        # @param driver [OmniAI::BaseDriver] A driver for interacting with the disk.
         # @param logger [IO] An optional logger for debugging executed commands.
-        def initialize(root:, logger: Logger.new(IO::NULL))
+        def initialize(driver:, logger: Logger.new(IO::NULL))
           super()
-          @root = Pathname(root)
+          @driver = driver
           @logger = logger
-        end
-
-      protected
-
-        # @param path [String]
-        #
-        # @raise [SecurityError]
-        #
-        # @return Pathname
-        def resolve!(path:)
-          @root.join(path).tap do |resolved|
-            relative = resolved.ascend.any? { |ancestor| ancestor.eql?(@root) }
-            raise SecurityError, "unknown path=#{resolved}" unless relative
-          end
         end
       end
     end

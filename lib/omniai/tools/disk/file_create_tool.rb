@@ -18,9 +18,7 @@ module OmniAI
         # @return [String]
         def execute(path:)
           @logger.info("#{self.class.name}#execute path=#{path.inspect}")
-
-          resolved = resolve!(path:)
-          FileUtils.touch(resolved) unless File.exist?(resolved)
+          @driver.file_create(path:)
         rescue SecurityError => e
           @logger.error(e.message)
           raise e

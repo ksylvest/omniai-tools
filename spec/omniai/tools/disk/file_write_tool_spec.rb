@@ -1,26 +1,21 @@
 # frozen_string_literal: true
 
 RSpec.describe OmniAI::Tools::Disk::FileWriteTool do
-  subject(:tool) { described_class.new(root:) }
+  subject(:tool) { described_class.new(driver:) }
 
-  let(:root) do
-    Dir.mktmpdir
-  end
-
-  around do |example|
-    example.run
-  ensure
-    FileUtils.remove_entry(root)
-  end
+  let(:driver) { OmniAI::Tools::Disk::BaseDriver.new(root:) }
+  let(:root) { ROOT.join("spec", "fixtures", "project") }
 
   describe "#execute" do
-    subject(:execute) { tool.execute(path: "./README.md", text: "Hello World") }
+    subject(:execute) { tool.execute(path:, text:) }
 
-    it "reads the file" do
-      expect { execute }
-        .to change { File.exist?(Pathname(root).join("README.md")) }
-        .from(false)
-        .to(true)
+    let(:path) { "./README.md" }
+    let(:text) { "Hello World" }
+
+    it "writes a file" do
+      allow(driver).to receive(:file_write)
+      execute
+      expect(driver).to have_received(:file_write).with(path:, text:)
     end
   end
 end

@@ -1,27 +1,20 @@
 # frozen_string_literal: true
 
 RSpec.describe OmniAI::Tools::Disk::FileDeleteTool do
-  subject(:tool) { described_class.new(root:) }
+  subject(:tool) { described_class.new(driver:) }
 
-  let(:root) do
-    dir = Dir.mktmpdir
-    FileUtils.touch(File.join(dir, "README.md"))
-    dir
-  end
-
-  around do |example|
-    example.run
-  ensure
-    FileUtils.remove_entry(root)
-  end
+  let(:driver) { OmniAI::Tools::Disk::BaseDriver.new(root:) }
+  let(:root) { ROOT.join("spec", "fixtures", "project") }
 
   describe "#execute" do
-    subject(:execute) { tool.execute(path: "./README.md") }
+    subject(:execute) { tool.execute(path:) }
+
+    let(:path) { "./README.md" }
 
     it "deletes a file" do
-      expect { execute }.to change { File.exist?(Pathname(root).join("README.md")) }
-        .from(true)
-        .to(false)
+      allow(driver).to receive(:file_delete)
+      execute
+      expect(driver).to have_received(:file_delete).with(path:)
     end
   end
 end

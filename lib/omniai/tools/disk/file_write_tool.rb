@@ -20,8 +20,8 @@ module OmniAI
         # @return [String]
         def execute(path:, text:)
           @logger.info("#{self.class.name}#execute path=#{path}")
-          File.write(resolve!(path:), text)
-        rescue StandardError => e
+          @driver.file_write(path:, text:)
+        rescue SecurityError => e
           @logger.error("ERROR: #{e.message}")
           raise e
         end
