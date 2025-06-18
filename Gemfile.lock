@@ -142,7 +142,7 @@ GEM
       event_stream_parser
       omniai (~> 2.6)
       zeitwerk
-    omniai-google (2.7.7)
+    omniai-google (2.7.9)
       event_stream_parser
       google-cloud-storage
       googleauth
