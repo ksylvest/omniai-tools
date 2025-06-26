@@ -155,7 +155,7 @@ module OmniAI
 
       # @param action [String]
       # @param url [String, nil]
-      # @param selector [String, nil] e.g. "button[type='submit']", "div#parent > span.child", etc
+      # @param selector [String, nil] e.g. "button", "div#parent > span.child", etc
       # @param value [String, nil]
       # @param context_size [Integer]
       # @param full_html [Boolean]
