@@ -137,9 +137,9 @@ GEM
       http
       logger
       zeitwerk
-    omniai-anthropic (2.6.3)
+    omniai-anthropic (2.9.0)
       event_stream_parser
-      omniai (~> 2.6)
+      omniai (~> 2.9)
       zeitwerk
     omniai-google (2.9.1)
       event_stream_parser
