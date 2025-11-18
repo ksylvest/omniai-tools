@@ -151,7 +151,7 @@ GEM
       event_stream_parser
       omniai (~> 2.6)
       zeitwerk
-    omniai-openai (2.6.1)
+    omniai-openai (2.6.2)
       event_stream_parser
       omniai (~> 2.6)
       zeitwerk
