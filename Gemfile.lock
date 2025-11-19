@@ -131,7 +131,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.10-x86_64-linux-gnu)
       racc (~> 1.4)
-    omniai (2.9.1)
+    omniai (2.9.2)
       base64
       event_stream_parser
       http
@@ -151,7 +151,7 @@ GEM
       event_stream_parser
       omniai (~> 2.6)
       zeitwerk
-    omniai-openai (2.6.2)
+    omniai-openai (2.6.3)
       event_stream_parser
       omniai (~> 2.6)
       zeitwerk
