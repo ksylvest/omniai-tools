@@ -131,30 +131,34 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.10-x86_64-linux-gnu)
       racc (~> 1.4)
-    omniai (2.9.2)
+    omniai (3.1.0)
       base64
       event_stream_parser
       http
       logger
       zeitwerk
-    omniai-anthropic (2.9.0)
+    omniai-anthropic (3.0.0)
       event_stream_parser
-      omniai (~> 2.9)
+      omniai (~> 3.0)
+      openssl
       zeitwerk
-    omniai-google (2.9.1)
+    omniai-google (3.0.0)
       event_stream_parser
       google-cloud-storage
       googleauth
-      omniai (~> 2.6)
+      omniai (~> 3.0)
+      openssl
       zeitwerk
-    omniai-mistral (2.6.0)
+    omniai-mistral (3.0.0)
       event_stream_parser
-      omniai (~> 2.6)
+      omniai (~> 3.0)
       zeitwerk
-    omniai-openai (2.6.5)
+    omniai-openai (3.0.0)
       event_stream_parser
-      omniai (~> 2.6)
+      omniai (~> 3.0)
+      openssl
       zeitwerk
+    openssl (3.3.2)
     os (1.1.4)
     parallel (1.27.0)
     parser (3.3.10.0)
