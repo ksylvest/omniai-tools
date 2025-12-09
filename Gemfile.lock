@@ -21,8 +21,8 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
-    addressable (2.8.7)
-      public_suffix (>= 2.0.2, < 7.0)
+    addressable (2.8.8)
+      public_suffix (>= 2.0.2, < 8.0)
     ast (2.4.3)
     base64 (0.3.0)
     bigdecimal (3.3.1)
@@ -65,7 +65,7 @@ GEM
       retriable (~> 3.1)
     google-apis-iamcredentials_v1 (0.26.0)
       google-apis-core (>= 0.15.0, < 2.a)
-    google-apis-storage_v1 (0.57.0)
+    google-apis-storage_v1 (0.58.0)
       google-apis-core (>= 0.15.0, < 2.a)
     google-cloud-core (1.8.0)
       google-cloud-env (>= 1.0, < 3.a)
@@ -107,7 +107,7 @@ GEM
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    json (2.16.0)
+    json (2.17.1)
     jwt (3.1.2)
       base64
     language_server-protocol (3.17.0.5)
@@ -122,7 +122,7 @@ GEM
       zeitwerk
     mini_mime (1.1.5)
     minitest (5.26.0)
-    multi_json (1.17.0)
+    multi_json (1.18.0)
     net-http (0.8.0)
       uri (>= 0.11.1)
     nokogiri (1.18.10-arm64-darwin)
@@ -131,7 +131,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.10-x86_64-linux-gnu)
       racc (~> 1.4)
-    omniai (3.1.2)
+    omniai (3.2.0)
       base64
       event_stream_parser
       http
@@ -142,11 +142,11 @@ GEM
       omniai (~> 3.0)
       openssl
       zeitwerk
-    omniai-google (3.0.0)
+    omniai-google (3.2.0)
       event_stream_parser
       google-cloud-storage
       googleauth
-      omniai (~> 3.0)
+      omniai (~> 3.2)
       openssl
       zeitwerk
     omniai-mistral (3.0.0)
@@ -174,7 +174,7 @@ GEM
     psych (5.2.6)
       date
       stringio
-    public_suffix (6.0.2)
+    public_suffix (7.0.0)
     racc (1.8.1)
     rainbow (3.1.1)
     rake (13.3.1)
