@@ -269,7 +269,7 @@ GEM
       selenium-webdriver (~> 4.2)
     websocket (1.2.11)
     yard (0.9.38)
-    zeitwerk (2.7.3)
+    zeitwerk (2.7.4)
 
 PLATFORMS
   arm64-darwin-24
