@@ -65,7 +65,7 @@ GEM
       retriable (~> 3.1)
     google-apis-iamcredentials_v1 (0.26.0)
       google-apis-core (>= 0.15.0, < 2.a)
-    google-apis-storage_v1 (0.58.0)
+    google-apis-storage_v1 (0.59.0)
       google-apis-core (>= 0.15.0, < 2.a)
     google-cloud-core (1.8.0)
       google-cloud-env (>= 1.0, < 3.a)
@@ -84,7 +84,7 @@ GEM
       googleauth (~> 1.9)
       mini_mime (~> 1.0)
     google-logging-utils (0.2.0)
-    googleauth (1.16.0)
+    googleauth (1.16.1)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.2)
       google-logging-utils (~> 0.1)
@@ -142,7 +142,7 @@ GEM
       omniai (~> 3.0)
       openssl
       zeitwerk
-    omniai-google (3.3.2)
+    omniai-google (3.3.3)
       event_stream_parser
       google-cloud-storage
       googleauth
