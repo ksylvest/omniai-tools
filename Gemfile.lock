@@ -131,7 +131,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.19.0-x86_64-linux-gnu)
       racc (~> 1.4)
-    omniai (3.2.2)
+    omniai (3.2.3)
       base64
       event_stream_parser
       http
