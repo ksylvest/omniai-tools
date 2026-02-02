@@ -153,7 +153,7 @@ GEM
       event_stream_parser
       omniai (~> 3.0)
       zeitwerk
-    omniai-openai (3.0.2)
+    omniai-openai (3.1.2)
       event_stream_parser
       omniai (~> 3.0)
       openssl
