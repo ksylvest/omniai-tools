@@ -142,7 +142,7 @@ GEM
       omniai (~> 3.0)
       openssl
       zeitwerk
-    omniai-google (3.3.3)
+    omniai-google (3.4.3)
       event_stream_parser
       google-cloud-storage
       googleauth
