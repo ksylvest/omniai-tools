@@ -65,7 +65,7 @@ GEM
       retriable (~> 3.1)
     google-apis-iamcredentials_v1 (0.26.0)
       google-apis-core (>= 0.15.0, < 2.a)
-    google-apis-storage_v1 (0.59.0)
+    google-apis-storage_v1 (0.60.0)
       google-apis-core (>= 0.15.0, < 2.a)
     google-cloud-core (1.8.0)
       google-cloud-env (>= 1.0, < 3.a)
@@ -143,7 +143,7 @@ GEM
       omniai (~> 3.0)
       openssl
       zeitwerk
-    omniai-google (3.4.3)
+    omniai-google (3.5.1)
       event_stream_parser
       google-cloud-storage
       googleauth
@@ -191,7 +191,7 @@ GEM
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
       uber (< 0.2.0)
-    retriable (3.1.2)
+    retriable (3.2.1)
     rexml (3.4.2)
     rspec (3.13.2)
       rspec-core (~> 3.13.0)
