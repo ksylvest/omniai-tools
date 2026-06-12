@@ -264,7 +264,7 @@ GEM
       regexp_parser (>= 1.2, < 3)
       selenium-webdriver (~> 4.2)
     websocket (1.2.11)
-    yard (0.9.43)
+    yard (0.9.44)
     zeitwerk (2.8.2)
 
 PLATFORMS
