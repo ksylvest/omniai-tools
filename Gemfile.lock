@@ -108,7 +108,7 @@ GEM
       base64
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
-    llhttp (0.6.1)
+    llhttp (0.6.2)
     logger (1.7.0)
     macos (0.1.8)
       ffi
@@ -133,7 +133,7 @@ GEM
       http (>= 5, < 7)
       logger
       zeitwerk
-    omniai-anthropic (3.3.0)
+    omniai-anthropic (3.4.1)
       event_stream_parser
       omniai (~> 3.7)
       openssl
