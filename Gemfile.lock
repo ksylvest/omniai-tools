@@ -126,15 +126,15 @@ GEM
       racc (~> 1.4)
     nokogiri (1.19.4-x86_64-linux-gnu)
       racc (~> 1.4)
-    omniai (3.7.1)
+    omniai (3.8.0)
       base64
       event_stream_parser
       http (>= 5, < 7)
       logger
       zeitwerk
-    omniai-anthropic (3.5.0)
+    omniai-anthropic (3.6.0)
       event_stream_parser
-      omniai (~> 3.7)
+      omniai (~> 3.8)
       openssl
       zeitwerk
     omniai-google (3.11.0)
