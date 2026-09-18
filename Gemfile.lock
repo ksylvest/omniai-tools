@@ -144,9 +144,10 @@ GEM
       omniai (~> 3.8)
       openssl
       zeitwerk
-    omniai-mistral (3.0.0)
+    omniai-mistral (3.0.1)
       event_stream_parser
       omniai (~> 3.0)
+      openssl
       zeitwerk
     omniai-openai (3.2.0)
       event_stream_parser
