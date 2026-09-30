@@ -33,7 +33,7 @@ GEM
     diff-lcs (1.6.2)
     digest-crc (0.7.0)
       rake (>= 12.0.0, < 14.0.0)
-    domain_name (0.6.20260907)
+    domain_name (0.6.20260921)
     drb (2.2.3)
     erb (6.0.4)
     event_stream_parser (1.0.0)
@@ -132,7 +132,7 @@ GEM
       http (>= 5, < 7)
       logger
       zeitwerk
-    omniai-anthropic (3.7.0)
+    omniai-anthropic (3.8.0)
       event_stream_parser
       omniai (~> 3.8)
       openssl
