@@ -132,7 +132,7 @@ GEM
       http (>= 5, < 7)
       logger
       zeitwerk
-    omniai-anthropic (3.8.1)
+    omniai-anthropic (3.10.0)
       event_stream_parser
       omniai (~> 3.8)
       openssl
