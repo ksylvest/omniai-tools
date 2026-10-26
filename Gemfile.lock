@@ -62,7 +62,7 @@ GEM
       retriable (>= 3.1, < 5.0)
     google-apis-iamcredentials_v1 (0.28.0)
       google-apis-core (>= 0.15.0, < 2.a)
-    google-apis-storage_v1 (0.69.0)
+    google-apis-storage_v1 (0.70.0)
       google-apis-core (>= 0.15.0, < 2.a)
     google-cloud-core (1.9.0)
       google-cloud-env (>= 1.0, < 3.a)
@@ -140,7 +140,7 @@ GEM
       omniai (~> 3.8)
       openssl
       zeitwerk
-    omniai-google (3.21.0)
+    omniai-google (3.22.0)
       event_stream_parser
       google-cloud-storage
       googleauth
@@ -171,7 +171,7 @@ GEM
       prettyprint
     prettyprint (0.2.0)
     prism (1.9.0)
-    pstore (0.2.1)
+    pstore (0.3.0)
     psych (5.3.1)
       date
       stringio
