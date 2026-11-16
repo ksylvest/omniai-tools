@@ -35,7 +35,7 @@ GEM
     domain_name (0.7.20261031)
     drb (2.2.3)
     erb (6.0.7)
-    event_stream_parser (1.0.0)
+    event_stream_parser (1.0.1)
     factory_bot (6.6.0)
       activesupport (>= 6.1.0)
     faraday (2.15.1)
@@ -70,7 +70,7 @@ GEM
       base64 (~> 0.2)
       faraday (>= 1.0, < 3.a)
     google-cloud-errors (1.7.1)
-    google-cloud-storage (1.62.1)
+    google-cloud-storage (1.62.2)
       addressable (~> 2.8)
       digest-crc (~> 0.4)
       google-apis-core (>= 0.18, < 2)
@@ -139,7 +139,7 @@ GEM
       omniai (~> 3.8)
       openssl
       zeitwerk
-    omniai-google (3.23.0)
+    omniai-google (3.24.0)
       event_stream_parser
       google-cloud-storage
       googleauth
